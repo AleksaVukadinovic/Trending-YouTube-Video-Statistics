@@ -3,7 +3,7 @@ import pandas as pd
 
 class DataPreprocessor:
     """
-    Handles cleaning, feature engineering, and preparation for analysis.
+    Handles data cleaning.
     """
     def __init__(self, df, category_map):
         self.df = df
