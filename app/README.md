@@ -106,7 +106,7 @@ pip install -r requirements.txt
 ### Basic Usage
 
 ```bash
-cd youtube_clustering/src
+cd app/src
 python main.py
 ```
 
