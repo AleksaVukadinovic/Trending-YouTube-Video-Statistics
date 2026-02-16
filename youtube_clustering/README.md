@@ -110,6 +110,8 @@ cd youtube_clustering/src
 python main.py
 ```
 
+The script will automatically download the dataset from Kaggle using `kagglehub` if not present in `data/raw/`.
+
 ### With Specific Data File
 
 ```bash

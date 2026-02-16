@@ -22,6 +22,7 @@ from evaluation import (
     save_evaluation_results
 )
 from visualization import create_all_visualizations
+from download_dataset import ensure_dataset
 
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
@@ -51,22 +52,18 @@ def setup_paths(base_dir: str = None) -> dict:
 
 
 def find_data_file(raw_data_dir: Path) -> str:
-    """Find the first CSV file in the raw data directory."""
+    """Find or download the dataset CSV file."""
     csv_files = list(raw_data_dir.glob('*.csv'))
     
-    if not csv_files:
-        raise FileNotFoundError(
-            f"No CSV files found in {raw_data_dir}. "
-            f"Please download the dataset from Kaggle and place it in {raw_data_dir}"
-        )
+    if csv_files:
+        preferred = ['DEvideos.csv', 'USvideos.csv', 'GBvideos.csv']
+        for pref in preferred:
+            for csv in csv_files:
+                if csv.name == pref:
+                    return str(csv)
+        return str(csv_files[0])
     
-    preferred_files = ['DEvideos.csv', 'USvideos.csv', 'GBvideos.csv']
-    for preferred in preferred_files:
-        for csv_file in csv_files:
-            if csv_file.name == preferred:
-                return str(csv_file)
-    
-    return str(csv_files[0])
+    return ensure_dataset()
 
 
 def generate_analysis_report(

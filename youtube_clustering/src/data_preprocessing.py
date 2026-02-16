@@ -45,10 +45,12 @@ def handle_missing_values(df: pd.DataFrame) -> pd.DataFrame:
     missing_before = df.isnull().sum().sum()
     
     for col in df.columns:
-        if df[col].dtype == 'object':
+        if df[col].dtype in ['object', 'string', 'str'] or pd.api.types.is_string_dtype(df[col]):
             df[col] = df[col].fillna('')
-        else:
+        elif pd.api.types.is_numeric_dtype(df[col]):
             df[col] = df[col].fillna(df[col].median())
+        else:
+            df[col] = df[col].fillna(method='ffill').fillna(method='bfill')
     
     missing_after = df.isnull().sum().sum()
     print(f"Handled missing values: {missing_before} -> {missing_after}")
