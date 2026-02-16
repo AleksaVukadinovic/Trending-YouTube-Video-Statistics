@@ -17,6 +17,7 @@ from evaluation import (
 )
 from visualization import create_all_visualizations
 from download_dataset import ensure_dataset
+from cluster_naming import generate_all_cluster_names, get_cluster_descriptions
 
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
@@ -73,7 +74,7 @@ def generate_analysis_report(
         "",
         "1. DATASET OVERVIEW",
         "-" * 40,
-        f"   - Total samples: {data.shape[0]}",
+        f"   - Total samples: {data.shape[0]:,}",
         f"   - Total features: {data.shape[1]}",
         f"   - Feature types: Numeric (scaled)",
         "",
@@ -125,29 +126,38 @@ def generate_analysis_report(
     best_labels = results[best['feature_set']][best['algorithm']]['labels']
     unique_labels = sorted(set(best_labels) - {-1})
     
+    cluster_names = generate_all_cluster_names(data, best_labels, feature_names)
+    cluster_descriptions = get_cluster_descriptions(data, best_labels, feature_names)
+    
+    global_means = np.mean(data, axis=0)
+    global_stds = np.std(data, axis=0)
+    global_stds[global_stds == 0] = 1
+    
     for cluster_id in unique_labels:
         mask = best_labels == cluster_id
         cluster_size = mask.sum()
         cluster_pct = cluster_size / len(best_labels) * 100
+        cluster_name = cluster_names.get(cluster_id, f'Cluster {cluster_id}')
         
         cluster_data = data[mask]
         cluster_means = cluster_data.mean(axis=0)
-        top_feature_indices = np.argsort(cluster_means)[-3:][::-1]
+        z_scores = (cluster_means - global_means) / global_stds
+        top_feature_indices = np.argsort(z_scores)[-5:][::-1]
         
-        report_lines.append(f"\n   Cluster {cluster_id}:")
-        report_lines.append(f"   - Size: {cluster_size} samples ({cluster_pct:.1f}%)")
-        report_lines.append("   - Distinguishing features:")
+        report_lines.append(f"\n   {cluster_name}:")
+        report_lines.append(f"   - Size: {cluster_size:,} videos ({cluster_pct:.1f}%)")
+        report_lines.append("   - Key characteristics (z-score from mean):")
         
         for idx in top_feature_indices:
-            if idx < len(feature_names):
+            if idx < len(feature_names) and z_scores[idx] > 0.3:
+                feat_name = feature_names[idx].replace('_', ' ').title()
                 report_lines.append(
-                    f"     * {feature_names[idx]}: {cluster_means[idx]:.3f} "
-                    f"(global mean: {data[:, idx].mean():.3f})"
+                    f"     * {feat_name}: {z_scores[idx]:+.2f}σ"
                 )
     
     if -1 in best_labels:
         noise_count = list(best_labels).count(-1)
-        report_lines.append(f"\n   Noise points: {noise_count} ({noise_count/len(best_labels)*100:.1f}%)")
+        report_lines.append(f"\n   Noise/Outliers: {noise_count:,} ({noise_count/len(best_labels)*100:.1f}%)")
     
     report_lines.extend([
         "",

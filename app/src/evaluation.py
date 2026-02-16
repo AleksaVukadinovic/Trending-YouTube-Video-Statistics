@@ -5,7 +5,6 @@ from pathlib import Path
 
 RANDOM_SEED = 42
 
-
 def calculate_silhouette(data: np.ndarray, labels: np.ndarray) -> float:
     unique_labels = set(labels)
     unique_labels.discard(-1)

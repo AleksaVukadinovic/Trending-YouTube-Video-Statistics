@@ -1,11 +1,11 @@
 ============================================================
 YOUTUBE TRENDING VIDEOS CLUSTERING ANALYSIS REPORT
-Generated: 2026-02-16 23:17:53
+Generated: 2026-02-16 23:44:51
 ============================================================
 
 1. DATASET OVERVIEW
 ----------------------------------------
-   - Total samples: 29627
+   - Total samples: 29,627
    - Total features: 102
    - Feature types: Numeric (scaled)
 
@@ -58,33 +58,36 @@ Generated: 2026-02-16 23:17:53
 6. CLUSTER INTERPRETATION
 ----------------------------------------
 
-   Cluster 0:
-   - Size: 27540 samples (93.0%)
-   - Distinguishing features:
-     * title_length: 0.069 (global mean: -0.000)
-     * title_word_count: 0.057 (global mean: -0.000)
-     * likes_per_view: 0.052 (global mean: 0.000)
+   Mainstream:
+   - Size: 27,540 videos (93.0%)
+   - Key characteristics (z-score from mean):
 
-   Cluster 1:
-   - Size: 79 samples (0.3%)
-   - Distinguishing features:
-     * numeric_mean: 13.078 (global mean: -0.000)
-     * views: 13.053 (global mean: 0.000)
-     * numeric_max: 13.053 (global mean: 0.000)
+   Niche Music Viral:
+   - Size: 79 videos (0.3%)
+   - Key characteristics (z-score from mean):
+     * Numeric Mean: +13.08σ
+     * Views: +13.05σ
+     * Numeric Max: +13.05σ
+     * Numeric Range: +13.05σ
+     * Numeric Std: +13.04σ
 
-   Cluster 2:
-   - Size: 1883 samples (6.4%)
-   - Distinguishing features:
-     * tfidf_tag_32: 2.767 (global mean: 0.000)
-     * tfidf_tag_9: 2.617 (global mean: -0.000)
-     * tfidf_tag_17: 2.568 (global mean: 0.000)
+   Film Specialized:
+   - Size: 1,883 videos (6.4%)
+   - Key characteristics (z-score from mean):
+     * Tfidf Tag 32: +2.77σ
+     * Tfidf Tag 9: +2.62σ
+     * Tfidf Tag 17: +2.57σ
+     * Tfidf Tag 38: +2.26σ
+     * Tfidf Tag 46: +1.97σ
 
-   Cluster 3:
-   - Size: 125 samples (0.4%)
-   - Distinguishing features:
-     * tfidf_tag_3: 15.363 (global mean: 0.000)
-     * tfidf_tag_33: 15.351 (global mean: -0.000)
-     * tfidf_tag_37: 10.425 (global mean: 0.000)
+   Niche People Specialized:
+   - Size: 125 videos (0.4%)
+   - Key characteristics (z-score from mean):
+     * Tfidf Tag 3: +15.36σ
+     * Tfidf Tag 33: +15.35σ
+     * Tfidf Tag 37: +10.42σ
+     * Category 22: +2.33σ
+     * Title Has Numbers: +0.89σ
 
 7. DIMENSIONALITY REDUCTION IMPACT
 ----------------------------------------

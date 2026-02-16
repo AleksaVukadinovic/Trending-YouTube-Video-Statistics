@@ -6,3 +6,4 @@ venv
 *.joblib
 *.csv
 errors.md
+results/
