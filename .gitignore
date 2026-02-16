@@ -5,3 +5,4 @@ venv
 *.npy
 *.joblib
 *.csv
+errors.md

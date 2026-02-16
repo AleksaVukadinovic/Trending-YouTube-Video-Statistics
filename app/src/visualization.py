@@ -1,8 +1,3 @@
-"""
-Visualization module for clustering results.
-Creates 2D/3D scatter plots, distribution plots, heatmaps, and elbow curves.
-"""
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -20,7 +15,6 @@ def plot_2d_clusters(
     title: str = "Cluster Visualization (2D PCA)",
     output_path: str = None
 ) -> None:
-    """Create 2D scatter plot of clusters using PCA projection."""
     if data.shape[1] > 2:
         pca = PCA(n_components=2, random_state=RANDOM_SEED)
         data_2d = pca.fit_transform(data)
@@ -64,7 +58,6 @@ def plot_3d_clusters(
     title: str = "Cluster Visualization (3D PCA)",
     output_path: str = None
 ) -> None:
-    """Create 3D scatter plot of clusters using PCA projection."""
     if data.shape[1] > 3:
         pca = PCA(n_components=3, random_state=RANDOM_SEED)
         data_3d = pca.fit_transform(data)
@@ -107,7 +100,6 @@ def plot_cluster_distribution(
     title: str = "Cluster Distribution",
     output_path: str = None
 ) -> None:
-    """Create bar plot showing cluster size distribution."""
     unique, counts = np.unique(labels, return_counts=True)
     
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -145,7 +137,6 @@ def plot_correlation_heatmap(
     output_path: str = None,
     max_features: int = 30
 ) -> None:
-    """Create correlation heatmap for features."""
     if feature_names is None:
         feature_names = [f'Feature_{i}' for i in range(data.shape[1])]
     
@@ -194,7 +185,6 @@ def plot_elbow_curve(
     title: str = "Elbow Method for Optimal k",
     output_path: str = None
 ) -> None:
-    """Create elbow curve plot for KMeans."""
     fig, ax = plt.subplots(figsize=(10, 6))
     
     ax.plot(k_range, inertias, 'b-o', linewidth=2, markersize=8)
@@ -225,7 +215,6 @@ def plot_metrics_comparison(
     evaluation_df: pd.DataFrame,
     output_path: str = None
 ) -> None:
-    """Create comparison plot of clustering metrics across algorithms."""
     fig, axes = plt.subplots(1, 3, figsize=(16, 5))
     
     metrics = ['silhouette', 'davies_bouldin', 'calinski_harabasz']
@@ -264,7 +253,6 @@ def create_all_visualizations(
     feature_names: list,
     output_dir: str = "visualizations"
 ) -> None:
-    """Generate all required visualizations."""
     print("\n=== Creating Visualizations ===")
     
     Path(output_dir).mkdir(parents=True, exist_ok=True)

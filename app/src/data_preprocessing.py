@@ -1,8 +1,3 @@
-"""
-Data preprocessing module for YouTube trending videos clustering.
-Handles data loading, cleaning, and initial transformations.
-"""
-
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -12,7 +7,6 @@ np.random.seed(RANDOM_SEED)
 
 
 def load_raw_data(file_path: str) -> pd.DataFrame:
-    """Load raw CSV data with proper encoding handling."""
     encodings = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
     
     for encoding in encodings:
@@ -27,7 +21,6 @@ def load_raw_data(file_path: str) -> pd.DataFrame:
 
 
 def remove_duplicates(df: pd.DataFrame) -> pd.DataFrame:
-    """Remove duplicate rows based on video_id if present, otherwise all columns."""
     initial_count = len(df)
     
     if 'video_id' in df.columns:
@@ -41,7 +34,6 @@ def remove_duplicates(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def handle_missing_values(df: pd.DataFrame) -> pd.DataFrame:
-    """Handle missing values appropriately for each column type."""
     missing_before = df.isnull().sum().sum()
     
     for col in df.columns:
@@ -58,7 +50,6 @@ def handle_missing_values(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def convert_date_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Convert date columns to datetime format."""
     date_columns = ['trending_date', 'publish_time']
     
     for col in date_columns:
@@ -73,7 +64,6 @@ def convert_date_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def remove_irrelevant_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Remove columns not useful for clustering."""
     columns_to_remove = [
         'video_id', 'thumbnail_link', 'description', 
         'video_error_or_removed', 'ratings_disabled', 'comments_disabled'
@@ -86,7 +76,6 @@ def remove_irrelevant_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
-    """Run the complete preprocessing pipeline."""
     print("\n=== Starting Data Preprocessing ===")
     
     df = remove_duplicates(df)
@@ -100,7 +89,6 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def save_processed_data(df: pd.DataFrame, output_path: str) -> None:
-    """Save processed dataframe to CSV."""
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(output_path, index=False)
     print(f"Saved processed data to: {output_path}")

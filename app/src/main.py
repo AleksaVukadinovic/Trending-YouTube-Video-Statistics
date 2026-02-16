@@ -1,9 +1,3 @@
-"""
-Main script for YouTube Trending Videos Clustering Project.
-Orchestrates the complete pipeline: preprocessing, feature engineering,
-clustering, evaluation, and visualization.
-"""
-
 import os
 import sys
 import warnings
@@ -29,7 +23,6 @@ np.random.seed(RANDOM_SEED)
 
 
 def setup_paths(base_dir: str = None) -> dict:
-    """Setup and create necessary directories."""
     if base_dir is None:
         base_dir = Path(__file__).parent.parent
     else:
@@ -52,7 +45,6 @@ def setup_paths(base_dir: str = None) -> dict:
 
 
 def find_data_file(raw_data_dir: Path) -> str:
-    """Find or download the dataset CSV file."""
     csv_files = list(raw_data_dir.glob('*.csv'))
     
     if csv_files:
@@ -73,7 +65,6 @@ def generate_analysis_report(
     feature_names: list,
     output_path: str
 ) -> str:
-    """Generate comprehensive analysis report."""
     report_lines = [
         "=" * 60,
         "YOUTUBE TRENDING VIDEOS CLUSTERING ANALYSIS REPORT",
@@ -201,7 +192,6 @@ def generate_analysis_report(
 
 
 def main(data_file: str = None):
-    """Run the complete clustering pipeline."""
     print("=" * 60)
     print("YOUTUBE TRENDING VIDEOS CLUSTERING PROJECT")
     print("=" * 60)

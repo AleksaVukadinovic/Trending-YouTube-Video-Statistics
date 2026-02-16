@@ -1,8 +1,3 @@
-"""
-Evaluation module for clustering results.
-Implements clustering metrics and comparison analysis.
-"""
-
 import numpy as np
 import pandas as pd
 from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score
@@ -12,7 +7,6 @@ RANDOM_SEED = 42
 
 
 def calculate_silhouette(data: np.ndarray, labels: np.ndarray) -> float:
-    """Calculate silhouette score. Returns -1 if invalid."""
     unique_labels = set(labels)
     unique_labels.discard(-1)
     
@@ -30,7 +24,6 @@ def calculate_silhouette(data: np.ndarray, labels: np.ndarray) -> float:
 
 
 def calculate_davies_bouldin(data: np.ndarray, labels: np.ndarray) -> float:
-    """Calculate Davies-Bouldin index. Lower is better. Returns -1 if invalid."""
     unique_labels = set(labels)
     unique_labels.discard(-1)
     
@@ -48,7 +41,6 @@ def calculate_davies_bouldin(data: np.ndarray, labels: np.ndarray) -> float:
 
 
 def calculate_calinski_harabasz(data: np.ndarray, labels: np.ndarray) -> float:
-    """Calculate Calinski-Harabasz score. Higher is better. Returns -1 if invalid."""
     unique_labels = set(labels)
     unique_labels.discard(-1)
     
@@ -66,7 +58,6 @@ def calculate_calinski_harabasz(data: np.ndarray, labels: np.ndarray) -> float:
 
 
 def evaluate_clustering(data: np.ndarray, labels: np.ndarray) -> dict:
-    """Calculate all clustering metrics."""
     return {
         'silhouette': calculate_silhouette(data, labels),
         'davies_bouldin': calculate_davies_bouldin(data, labels),
@@ -77,7 +68,6 @@ def evaluate_clustering(data: np.ndarray, labels: np.ndarray) -> dict:
 
 
 def evaluate_all_results(data: np.ndarray, results: dict, data_variants: dict = None) -> pd.DataFrame:
-    """Evaluate all clustering results and create comparison table."""
     print("\n=== Evaluating Clustering Results ===")
     
     evaluation_rows = []
@@ -122,7 +112,6 @@ def evaluate_all_results(data: np.ndarray, results: dict, data_variants: dict = 
 
 
 def get_best_model(evaluation_df: pd.DataFrame) -> dict:
-    """Identify the best performing model based on average rank."""
     best_row = evaluation_df.loc[evaluation_df['avg_rank'].idxmin()]
     return {
         'algorithm': best_row['algorithm'],
@@ -135,7 +124,6 @@ def get_best_model(evaluation_df: pd.DataFrame) -> dict:
 
 
 def get_cluster_statistics(data: np.ndarray, labels: np.ndarray, feature_names: list = None) -> pd.DataFrame:
-    """Calculate statistics for each cluster."""
     df = pd.DataFrame(data, columns=feature_names)
     df['cluster'] = labels
     
@@ -151,7 +139,6 @@ def generate_cluster_summary(
     labels: np.ndarray,
     feature_names: list = None
 ) -> str:
-    """Generate a text summary of cluster characteristics."""
     unique_labels = sorted(set(labels) - {-1})
     
     summary_lines = ["Cluster Characteristics Summary", "=" * 40]
@@ -183,7 +170,6 @@ def save_evaluation_results(
     evaluation_df: pd.DataFrame,
     output_path: str
 ) -> None:
-    """Save evaluation results to CSV."""
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     evaluation_df.to_csv(output_path, index=False)
     print(f"Saved evaluation results to: {output_path}")

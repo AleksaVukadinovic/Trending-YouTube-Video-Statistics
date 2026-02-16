@@ -1,8 +1,3 @@
-"""
-Clustering module for YouTube trending videos.
-Implements 5 clustering algorithms with dimensionality reduction options.
-"""
-
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN, SpectralClustering
@@ -18,7 +13,6 @@ np.random.seed(RANDOM_SEED)
 
 
 def find_optimal_k_elbow(data: np.ndarray, k_range: range = range(2, 11)) -> tuple:
-    """Find optimal k using elbow method. Returns optimal k and inertias."""
     inertias = []
     
     for k in k_range:
@@ -35,7 +29,6 @@ def find_optimal_k_elbow(data: np.ndarray, k_range: range = range(2, 11)) -> tup
 
 
 def apply_pca(data: np.ndarray, n_components: int = None, variance_ratio: float = 0.95) -> tuple:
-    """Apply PCA dimensionality reduction."""
     if n_components is None:
         pca = PCA(n_components=variance_ratio, random_state=RANDOM_SEED)
     else:
@@ -50,7 +43,6 @@ def apply_pca(data: np.ndarray, n_components: int = None, variance_ratio: float 
 
 
 def apply_selectkbest(data: np.ndarray, k: int = 50, pseudo_labels: np.ndarray = None) -> tuple:
-    """Apply SelectKBest feature selection."""
     if pseudo_labels is None:
         kmeans = KMeans(n_clusters=5, random_state=RANDOM_SEED, n_init=10)
         pseudo_labels = kmeans.fit_predict(data)
@@ -64,7 +56,6 @@ def apply_selectkbest(data: np.ndarray, k: int = 50, pseudo_labels: np.ndarray =
 
 
 def train_kmeans(data: np.ndarray, n_clusters: int = 5) -> tuple:
-    """Train KMeans clustering model."""
     model = KMeans(
         n_clusters=n_clusters,
         random_state=RANDOM_SEED,
@@ -77,7 +68,6 @@ def train_kmeans(data: np.ndarray, n_clusters: int = 5) -> tuple:
 
 
 def train_agglomerative(data: np.ndarray, n_clusters: int = 5) -> tuple:
-    """Train Agglomerative clustering model."""
     model = AgglomerativeClustering(
         n_clusters=n_clusters,
         linkage='ward'
@@ -88,7 +78,6 @@ def train_agglomerative(data: np.ndarray, n_clusters: int = 5) -> tuple:
 
 
 def train_dbscan(data: np.ndarray, eps: float = 0.5, min_samples: int = 5) -> tuple:
-    """Train DBSCAN clustering model."""
     model = DBSCAN(
         eps=eps,
         min_samples=min_samples,
@@ -102,7 +91,6 @@ def train_dbscan(data: np.ndarray, eps: float = 0.5, min_samples: int = 5) -> tu
 
 
 def find_optimal_dbscan_eps(data: np.ndarray, sample_size: int = 1000) -> float:
-    """Find optimal eps for DBSCAN using k-distance graph."""
     from sklearn.neighbors import NearestNeighbors
     
     if len(data) > sample_size:
@@ -126,7 +114,6 @@ def find_optimal_dbscan_eps(data: np.ndarray, sample_size: int = 1000) -> float:
 
 
 def train_gmm(data: np.ndarray, n_components: int = 5) -> tuple:
-    """Train Gaussian Mixture Model."""
     model = GaussianMixture(
         n_components=n_components,
         random_state=RANDOM_SEED,
@@ -140,7 +127,6 @@ def train_gmm(data: np.ndarray, n_components: int = 5) -> tuple:
 
 
 def train_spectral(data: np.ndarray, n_clusters: int = 5) -> tuple:
-    """Train Spectral clustering model."""
     n_samples = min(5000, len(data))
     if len(data) > n_samples:
         idx = np.random.choice(len(data), n_samples, replace=False)
@@ -171,7 +157,6 @@ def train_spectral(data: np.ndarray, n_clusters: int = 5) -> tuple:
 
 
 def save_model(model, labels: np.ndarray, model_name: str, output_dir: str) -> None:
-    """Save model and labels to disk."""
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     
     model_path = Path(output_dir) / f"{model_name}_model.joblib"
@@ -183,7 +168,6 @@ def save_model(model, labels: np.ndarray, model_name: str, output_dir: str) -> N
 
 
 def train_all_models(data: np.ndarray, n_clusters: int = 5, output_dir: str = "models") -> dict:
-    """Train all clustering models and return results."""
     print(f"\n=== Training Clustering Models (n_clusters={n_clusters}) ===")
     
     results = {}
@@ -217,7 +201,6 @@ def run_clustering_pipeline(
     output_dir: str = "models",
     n_clusters: int = None
 ) -> dict:
-    """Run complete clustering pipeline with dimensionality reduction variants."""
     print("\n=== Running Clustering Pipeline ===")
     
     all_results = {}

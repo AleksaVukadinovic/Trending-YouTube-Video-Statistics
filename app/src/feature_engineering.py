@@ -1,8 +1,3 @@
-"""
-Feature engineering module for YouTube trending videos clustering.
-Creates 100+ features from raw data including TF-IDF, engagement metrics, and temporal features.
-"""
-
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -14,7 +9,6 @@ np.random.seed(RANDOM_SEED)
 
 
 def create_temporal_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Extract temporal features from date columns."""
     df = df.copy()
     
     if 'trending_date' in df.columns and df['trending_date'].dtype == 'datetime64[ns]':
@@ -41,7 +35,6 @@ def create_temporal_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def create_engagement_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Create engagement-related features."""
     df = df.copy()
     
     views = df['views'].replace(0, 1) if 'views' in df.columns else 1
@@ -78,7 +71,6 @@ def create_engagement_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def create_text_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Create features from text columns (title, tags)."""
     df = df.copy()
     
     if 'title' in df.columns:
@@ -106,7 +98,6 @@ def create_text_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def simple_sentiment_score(text: str) -> float:
-    """Calculate a simple sentiment score based on positive/negative word presence."""
     text = str(text).lower()
     
     positive_words = [
@@ -129,14 +120,12 @@ def simple_sentiment_score(text: str) -> float:
 
 
 def count_tags(tags_str: str) -> int:
-    """Count number of tags in the tags string."""
     if pd.isna(tags_str) or tags_str == '[none]' or tags_str == '':
         return 0
     return len(str(tags_str).split('|'))
 
 
 def create_tfidf_features(df: pd.DataFrame, max_features: int = 50) -> tuple:
-    """Create TF-IDF features from tags column."""
     if 'tags' not in df.columns:
         return df, None
     
@@ -163,7 +152,6 @@ def create_tfidf_features(df: pd.DataFrame, max_features: int = 50) -> tuple:
 
 
 def create_category_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Create one-hot encoded features for category_id."""
     df = df.copy()
     
     if 'category_id' in df.columns:
@@ -179,7 +167,6 @@ def create_category_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def create_statistical_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Create statistical features from numerical columns."""
     df = df.copy()
     
     numeric_cols = ['views', 'likes', 'dislikes', 'comment_count']
@@ -197,7 +184,6 @@ def create_statistical_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_numeric_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Extract only numeric features for clustering."""
     text_cols = ['title', 'channel_title', 'tags', 'trending_date', 'publish_time']
     cols_to_drop = [c for c in text_cols if c in df.columns]
     
@@ -212,7 +198,6 @@ def get_numeric_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def scale_features(df: pd.DataFrame, scaler_type: str = 'standard') -> tuple:
-    """Scale numeric features using StandardScaler or MinMaxScaler."""
     if scaler_type == 'standard':
         scaler = StandardScaler()
     else:
@@ -226,7 +211,6 @@ def scale_features(df: pd.DataFrame, scaler_type: str = 'standard') -> tuple:
 
 
 def engineer_features(df: pd.DataFrame, tfidf_max_features: int = 50) -> tuple:
-    """Run the complete feature engineering pipeline."""
     print("\n=== Starting Feature Engineering ===")
     
     df = create_temporal_features(df)
